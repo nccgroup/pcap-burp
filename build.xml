@@ -1,0 +1,55 @@
+<project name="burp-pcap" default="dist" basedir=".">
+    <description>
+        Pcap import for Burp
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="src-burp" location="src-burp"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+	<path id="deps.classpath">
+        <pathelement location="${build}"/>
+        <pathelement location="lib/jpcap.jar"/>
+        <pathelement location="lib/commons-lang3-3.1.jar"/>
+        <pathelement location="lib/commons-logging-1.1.1.jar"/>
+    	<pathelement location="lib/httpcore-4.2.1.jar"/>
+		<pathelement location="lib/pcap-reconst-1.3.1.jar"/>
+    </path>
+	
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} and ${src-burp} into ${build} -->
+  	<javac srcdir="${src-burp}" destdir="${build}"/>
+  	<javac srcdir="${src}" destdir="${build}" classpathref="deps.classpath"/>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <!-- Put everything in ${build} into the jar file -->
+    <jar jarfile="${dist}/lib/burp-pcap-${DSTAMP}.jar" basedir="${build}" excludes="burp/I*.class">
+    	<zipfileset src="lib/jpcap.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/commons-lang3-3.1.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/commons-logging-1.1.1.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/httpcore-4.2.1.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/pcap-reconst-1.3.1.jar" excludes="META-INF/*"/>
+  	</jar>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
