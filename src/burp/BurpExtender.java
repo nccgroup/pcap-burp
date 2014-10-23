@@ -75,27 +75,5 @@ public class BurpExtender implements IBurpExtender
     	
         // set our extension name
         callbacks.setExtensionName("Pcap File Parser");
-        
-        /*
-        // obtain our output and error streams
-        PrintWriter stdout = new PrintWriter(callbacks.getStdout(), true);
-        PrintWriter stderr = new PrintWriter(callbacks.getStderr(), true);
-        
-        // write a message to our output stream
-
-        stdout.println("Hello output");
-        stdout.println(System.getProperty("java.library.path"));
-        
-        // write a message to our error stream
-        stderr.println("Hello errors");
-        
-        // write a message to the Burp alerts tab
-        callbacks.issueAlert("Hello alerts");
-        
-        // throw an exception that will appear in our error stream
-        //throw new RuntimeException("Hello exceptions");
-        */
-        //HttpReconstructorExample.main(new String[] {"C:/Users/stephen/Desktop/dlna-bounce/bluray-2014-registration.pcap"});
-        //HttpReconstructorExample.main(new String[] {"C:/Users/stephen/Downloads/4od-cap.pcap"});
     }
 }
