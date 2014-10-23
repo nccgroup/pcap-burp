@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpException;
 
 import com.nccgroup.burp.HttpUtils;
+import com.nccgroup.burp.IHttpRequestResponseImpl;
 
 import pcap.reconst.http.datamodel.RecordedHttpFlow;
 import pcap.reconst.http.datamodel.RecordedHttpRequestMessage;

@@ -1,4 +1,4 @@
-package com.nccgroup.burp.pcap;
+package com.nccgroup.burp;
 
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
