@@ -8,34 +8,22 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileFilter;
 
 import com.nccgroup.burp.pcap.HttpReconstructor;
+import com.nccgroup.burp.pcap.PcapFileFilter;
 
 public class BurpExtender implements IBurpExtender
 {
 	public static IBurpExtenderCallbacks callbacks;
 
 	private static final class OpenPcapFileMenuAction extends AbstractAction {
-		private static final class PcapFileFilter extends FileFilter {
-			@Override
-			public String getDescription() {
-				return "*.pcap files";
-			}
-
-			@Override
-			public boolean accept(File f) {
-				return f.isDirectory() || f.getName().endsWith(".pcap");
-			}
-		}
-
 		/**
 		 * Generate by Eclipse
 		 */
 		private static final long serialVersionUID = 5003331249971440291L;
 		
 		//Create a file chooser
-		final JFileChooser fc = new JFileChooser();
+		private final JFileChooser fc = new JFileChooser();
 
 		public OpenPcapFileMenuAction() {
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
