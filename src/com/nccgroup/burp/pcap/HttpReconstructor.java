@@ -1,7 +1,3 @@
-/*
- * Author: Chris Neasbitt
- */
-
 package com.nccgroup.burp.pcap;
 
 import java.io.File;
