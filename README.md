@@ -1,18 +1,20 @@
-This project provides a Burp Suite extension for importing Pcap files. It can be used in cases 
-where a HTTP client does not support proxying but it would be useful to inspect or replay the HTTP traffic using Burp. 
+This project provides a Burp Suite extension for importing and passively scanning Pcap files with Burp. It can be used in cases 
+where a HTTP client does not support proxying but it would be useful to scan, inspect or replay the HTTP traffic using Burp. 
 
+Building from Source (optional)
+-------------------------------
+The Ant build file will produce a jar in the dist/lib directory.
 
 Installation
 ------------
-
-The Ant build file will produce a jar which can be added to Burp via Burp's "Extender" tab.
-This project makes use of jpcap, which in turn relies on a native binary to be loaded by Java. 
-You should download the correct binary from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
-and place it in your java.library.path (i.e. your %PATH% on Windows) 
+<ol>
+<li>Use Burp's "Extender" tab to add the jar file from the dist/lib directory.</li>
+<li>This project makes use of jpcap, which in turn relies on a native binary to be loaded by Java. 
+Download the correct binary from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
+and place it in your java.library.path (i.e. your %PATH% on Windows)</li> 
 
 Usage
 -----
-
-Once the extension has been loaded an "Open Pcap file..." option will be added to the "right-click" 
-context menu on the trees under the Scanner and Target tabs in Burp. 
+After installation, an "Open Pcap file..." option will be added to the "right-click" 
+context menu on the trees under the <strong>Scanner</strong> and <strong>Target</strong> tabs in Burp.
 
