@@ -16,5 +16,5 @@ and place it in your java.library.path (i.e. your %PATH% on Windows)</li>
 Usage
 -----
 After installation, an "Open Pcap file..." option will be added to the "right-click" 
-context menu on the trees under the <strong>Scanner</strong> and <strong>Target</strong> tabs in Burp.
+context menu on the trees under the **Scanner** and **Target** tabs in Burp.
 
