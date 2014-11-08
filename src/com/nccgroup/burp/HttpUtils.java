@@ -63,7 +63,7 @@ public class HttpUtils {
 		final String HEADER_BODY_SEPERATOR = "\r\n\r\n";
 		
 		String initialPart = new String(input, 0, Math.min(MAX_HEADER_SIZE, input.length));
-		int headerLocation = initialPart.indexOf("Transfer-Encoding: chunked\r\n");
+		int headerLocation = initialPart.toLowerCase().indexOf("transfer-encoding: chunked\r\n");
 		if (headerLocation >= 0)
 		{
 			int bodyOffset = initialPart.indexOf(HEADER_BODY_SEPERATOR) + HEADER_BODY_SEPERATOR.length();
@@ -84,13 +84,18 @@ public class HttpUtils {
 			//Until we've processed all of the input
 			while(nextByte != -1)
 			{	
-				StringBuffer hexBuffer = new StringBuffer();
+				StringBuffer hexBuffer = new StringBuffer(100);
 				
 				//Stop parsing the length bytes when we hit a non-hex char
 				while(nextByte != (byte)'\r' && nextByte != (byte)';')
 				{
 					nextByte = (byte) bais.read();
 					hexBuffer.append((char)nextByte);
+					if(hexBuffer.length() > 99)
+					{
+						//We shouldn't be dealing with this much hex - something is wrong
+						return input;
+					}
 				}
 				//Consume up to the \n
 				while(nextByte != (byte)'\n' )
@@ -103,7 +108,7 @@ public class HttpUtils {
 				int chunkSize = Integer.parseInt(hexBuffer.toString(), 16);
 				if (chunkSize == 0)
 				{
-					//There may be some trialers at this point - but we've nowhere to put them, so drop them
+					//There may be some trailers at this point - but we've nowhere to put them, so drop them
 					return baos.toByteArray();
 				}
 	
