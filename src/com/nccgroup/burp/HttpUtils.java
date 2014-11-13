@@ -11,6 +11,37 @@ import burp.BurpExtender;
 
 public class HttpUtils {
 
+	private static final int MAX_HEADER_SIZE = 16 * 1024;
+
+	/**
+	 * Removes provisional "HTTP/1.1 100 Continue" server responses from the request stream. 
+	 * These responses will appear in the request stream (rather than the response stream) given 
+	 * the assumption from the HTTP splitting library that a HTTP conversion contains a single 
+	 * request followed by a single response.
+	 *  
+	 * @return The given byte[] without a provisional response embedded within.
+	 */
+	public static byte[] stripContinueFromRequests(byte[] input)
+	{
+		String initialPart = new String(input, 0, Math.min(MAX_HEADER_SIZE, input.length));
+		int stringIndex = initialPart.indexOf("HTTP/1.1 100 Continue\r\n\r\n");
+		final int stringLength = "HTTP/1.1 100 Continue\r\n\r\n".length();
+		
+		if (stringIndex != -1)
+		{
+			byte[] modified_request = new byte[input.length - stringLength];
+			//Copy up to the string we wish to exclude
+			System.arraycopy(input, 0, modified_request, 0, stringIndex);
+			//Copy the other side of the byte array after the string we wish to exclude
+			System.arraycopy(input, stringIndex + stringLength, modified_request, stringIndex, input.length - (stringIndex + stringLength));
+			return modified_request;
+		}
+		else
+		{
+			return input;
+		}
+	}
+	
 	/**
 	 * Decompresses the body of applicable HTTP streams.
 	 * 
@@ -59,7 +90,6 @@ public class HttpUtils {
 	 */
 	public static byte[] stripChunkedEncoding(byte[] input)
 	{
-		final int MAX_HEADER_SIZE = 16 * 1024;
 		final String HEADER_BODY_SEPERATOR = "\r\n\r\n";
 		
 		String initialPart = new String(input, 0, Math.min(MAX_HEADER_SIZE, input.length));

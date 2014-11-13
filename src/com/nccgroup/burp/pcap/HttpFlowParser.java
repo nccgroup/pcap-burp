@@ -68,7 +68,7 @@ public class HttpFlowParser extends pcap.reconst.http.HttpFlowParser {
 
 		private PcapRequestResponse(FlowBuf flow, TcpReassembler assembler) 
 		{
-			super(HttpUtils.stripChunkedEncoding(assembler.getOrderedPacketDataBytes(flow.reqStart, flow.reqEnd)),
+			super(HttpUtils.stripChunkedEncoding(HttpUtils.stripContinueFromRequests(assembler.getOrderedPacketDataBytes(flow.reqStart, flow.reqEnd))),
 					HttpUtils.decompressIfRequired(HttpUtils.stripChunkedEncoding(assembler.getOrderedPacketDataBytes(flow.respStart, flow.respEnd))));
 			
 			this.flow = flow;
