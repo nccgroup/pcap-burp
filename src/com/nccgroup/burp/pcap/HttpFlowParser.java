@@ -34,8 +34,6 @@ public class HttpFlowParser extends pcap.reconst.http.HttpFlowParser {
 		}
 		byte[] rawdata = null;
 		if (flow.hasRequestData()) {
-			rawdata = assembler.getOrderedPacketDataBytes(flow.reqStart, flow.reqEnd);
-			
 			PcapRequestResponse rr = new PcapRequestResponse(flow, assembler);
 			BurpExtender.callbacks.addToSiteMap(rr);
 			IHttpService rrServ = rr.getHttpService();
@@ -44,6 +42,8 @@ public class HttpFlowParser extends pcap.reconst.http.HttpFlowParser {
 			RecordedHttpRequestMessage request;
 			RecordedHttpResponse response = null;
 
+			rawdata = assembler.getOrderedPacketDataBytes(flow.reqStart, flow.reqEnd);
+			
 			if (flow.hadResponseData()) {
 				byte[] respBytes = assembler.getOrderedPacketDataBytes(flow.respStart, flow.respEnd);
 				byte[] reqRespbytes = new byte[rawdata.length + respBytes.length];
@@ -69,7 +69,7 @@ public class HttpFlowParser extends pcap.reconst.http.HttpFlowParser {
 		private PcapRequestResponse(FlowBuf flow, TcpReassembler assembler) 
 		{
 			super(HttpUtils.stripChunkedEncoding(HttpUtils.stripContinueFromRequests(assembler.getOrderedPacketDataBytes(flow.reqStart, flow.reqEnd))),
-					HttpUtils.decompressIfRequired(HttpUtils.stripChunkedEncoding(assembler.getOrderedPacketDataBytes(flow.respStart, flow.respEnd))));
+					flow.respStart == -1 ? new byte[0] : HttpUtils.decompressIfRequired(HttpUtils.stripChunkedEncoding(assembler.getOrderedPacketDataBytes(flow.respStart, flow.respEnd))));
 			
 			this.flow = flow;
 			this.assembler = assembler;
