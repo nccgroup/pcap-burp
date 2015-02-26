@@ -3,13 +3,13 @@ where a HTTP client does not support proxying but it would be useful to scan, in
 
 Building from Source (optional)
 -------------------------------
-The Ant build file will produce a jar in the dist/lib directory.
+The Ant build file will produce a consolidated jar in the dist/lib directory.
 
 Installation
 ------------
-1. Use Burp's "Extender" tab to add the jar file from the dist/lib directory.
+1. Use Burp's "Extender" tab to add the latest jar file from the [dist/lib](https://github.com/nccgroup/pcap-burp/tree/master/dist/lib) directory.
 2. This project makes use of jpcap, which in turn relies on a native binary to be loaded by Java. 
-Download the correct binary from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
+Download the correct binary for you platform from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
 and place it in your java.library.path (i.e. your %PATH% on Windows) 
 
 Usage
