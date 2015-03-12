@@ -19,7 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import burp.BurpExtender;
 import pcap.reconst.http.datamodel.RecordedHttpFlow;
-import pcap.reconst.tcp.JpcapReconstructor;
+import pcap.reconst.tcp.JnetpcapReconstructor;
 import pcap.reconst.tcp.PacketReassembler;
 import pcap.reconst.tcp.TcpConnection;
 import pcap.reconst.tcp.TcpReassembler;
@@ -32,8 +32,8 @@ public class HttpReconstructor {
 		try {
 			// Reassemble the TCP streams.
 			Map<TcpConnection, TcpReassembler> map = 
-					new JpcapReconstructor(new PacketReassembler()).reconstruct(pcapFile.getAbsolutePath());
-
+					new JnetpcapReconstructor(new PacketReassembler()).reconstruct(pcapFile.getAbsolutePath());
+			
 			// Parse the HTTP flows from the streams.
 			HttpFlowParser httpParser = new HttpFlowParser(map);
 			Map<TcpConnection, List<RecordedHttpFlow>> flows = httpParser.parse();

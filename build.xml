@@ -10,11 +10,11 @@
 
 	<path id="deps.classpath">
         <pathelement location="${build}"/>
-        <pathelement location="lib/jpcap.jar"/>
+		<pathelement location="lib/jnetpcap.jar"/>
         <pathelement location="lib/commons-lang3-3.1.jar"/>
         <pathelement location="lib/commons-logging-1.1.1.jar"/>
     	<pathelement location="lib/httpcore-4.2.1.jar"/>
-		<pathelement location="lib/pcap-reconst-1.3.3.jar"/>
+		<pathelement location="lib/pcap-reconst-1.3.4.jar"/>
     </path>
 	
   <target name="init">
@@ -38,11 +38,11 @@
 
     <!-- Put everything in ${build} into the jar file -->
     <jar jarfile="${dist}/lib/burp-pcap-${DSTAMP}.jar" basedir="${build}" excludes="burp/I*.class">
-    	<zipfileset src="lib/jpcap.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/jnetpcap.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/commons-lang3-3.1.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/commons-logging-1.1.1.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/httpcore-4.2.1.jar" excludes="META-INF/*"/>
-    	<zipfileset src="lib/pcap-reconst-1.3.3.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/pcap-reconst-1.3.4.jar" excludes="META-INF/*"/>
   	</jar>
   </target>
 

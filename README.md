@@ -7,18 +7,18 @@ The Ant build file will produce a consolidated jar in the dist/lib directory.
 
 Installation
 ------------
-1. Use Burp's "Extender" tab to add the latest jar file from the [dist/lib](https://github.com/nccgroup/pcap-burp/tree/master/dist/lib) directory.
-2. This project makes use of jpcap, which in turn relies on a native binary to be loaded by Java. 
-Download the correct binary for you platform from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
+1. This project makes use of jNetPcap, which requires you have installed either [WinPcap](http://www.winpcap.org/) (on Windows) or [libpcap](http://www.tcpdump.org/) (on Linux)
+2. jNetPcap 1.4.r1425 includes a native binary component which must be loaded by Java. 
+For convenience you can download the correct binary for your platform from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
 and place it in your java.library.path (i.e. your %PATH% on Windows) :
 
 |     | Windows | Linux |
 |-----|---------|-------|
-| x32 | [jpcap.dll](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/jpcap.dll) | [libjpcap.so](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/libjpcap.so) |
-| x64 | [jpcap.dll](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/jpcap.dll) | [libjpcap.so](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/libjpcap.so) |
+| x32 | [jnetpcap.dll](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/jnetpcap.dll) | [libjpcap.so](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/libjnetpcap.so) |
+| x64 | [jnetpcap.dll](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/jnetpcap.dll) | [libjpcap.so](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/libjnetpcap.so) |
+3. Use Burp's "Extender" tab to add the latest jar file from the [dist/lib](https://github.com/nccgroup/pcap-burp/tree/master/dist/lib) directory.
 
 Usage
 -----
 After installation, an "Open Pcap file..." option will be added to the "right-click" 
 context menu on the trees under the **Scanner** and **Target** tabs in Burp.
-
