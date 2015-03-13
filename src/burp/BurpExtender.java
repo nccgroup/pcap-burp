@@ -55,7 +55,7 @@ public class BurpExtender implements IBurpExtender
 		        catch(UnsatisfiedLinkError ule)
 		        {
 		            // write a message to the Burp alerts tab
-		            callbacks.issueAlert("Unable to load jpcap library from java.library.path");
+		            callbacks.issueAlert("Unable to load jNetPcap library from java.library.path");
             		callbacks.issueAlert("java.library.path is "+ System.getProperty("java.library.path"));
             		callbacks.issueAlert("Visit https://github.com/neonbunny/pcap-reconst/tree/master/lib for available libraries.");
 		        }
