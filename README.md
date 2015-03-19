@@ -22,3 +22,7 @@ Usage
 -----
 After installation, an "Open Pcap file..." option will be added to the "right-click" 
 context menu on the trees under the **Scanner** and **Target** tabs in Burp.
+
+Notes
+-----
+The newer PcapNG format is not supported. Details on converting PcapNG to Pcap format can be found in this blog post: [http://www.netresec.com/?page=Blog&month=2012-12&post=HowTo-handle-PcapNG-files]
