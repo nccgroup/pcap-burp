@@ -40,6 +40,7 @@ public class BurpExtender implements IBurpExtender
 
 		public OpenPcapFileMenuAction() {
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			fc.setMultiSelectionEnabled(true);
 			fc.setFileFilter(new PcapFileFilter());
 			
 			setEnabled(true);
@@ -50,10 +51,13 @@ public class BurpExtender implements IBurpExtender
 			int returnVal = fc.showOpenDialog(null);
 
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        File file = fc.getSelectedFile();
+		        File[] files = fc.getSelectedFiles();
 		        try
 		        {
-		        	HttpReconstructor.loadPcap(file);
+		        	for (File file : files)
+		        	{
+		        		HttpReconstructor.loadPcap(file);
+		        	}
 		        }
 		        catch(PcapException pce)
 		        {
