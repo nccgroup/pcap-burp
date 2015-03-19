@@ -30,6 +30,9 @@ public class BurpExtender implements IBurpExtender
 	public static IBurpExtenderCallbacks callbacks;
 
 	private static final class OpenPcapFileMenuAction extends AbstractAction {
+		/** The config name for the previously accessed Pcap directory **/
+		private static final String PREV_PCAP_DIR = "PREV_PCAP_DIR";
+
 		/**
 		 * Generate by Eclipse
 		 */
@@ -42,6 +45,14 @@ public class BurpExtender implements IBurpExtender
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fc.setMultiSelectionEnabled(true);
 			fc.setFileFilter(new PcapFileFilter());
+			
+			String previousDir = BurpExtender.callbacks.loadExtensionSetting(PREV_PCAP_DIR);
+			if (previousDir != null)
+			{
+				File previousDirFileObj = new File(previousDir);
+				//The FileChooser will gracefully handle non-existent directories
+				fc.setCurrentDirectory(previousDirFileObj);
+			}
 			
 			setEnabled(true);
 			putValue("Name", "Open Pcap File...");
@@ -56,6 +67,8 @@ public class BurpExtender implements IBurpExtender
 		        {
 		        	for (File file : files)
 		        	{
+		        		BurpExtender.callbacks.saveExtensionSetting(PREV_PCAP_DIR, file.getParent());
+
 		        		HttpReconstructor.loadPcap(file);
 		        	}
 		        }
