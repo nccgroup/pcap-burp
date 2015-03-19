@@ -17,18 +17,19 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import burp.BurpExtender;
+import pcap.reconst.ex.PcapException;
 import pcap.reconst.http.datamodel.RecordedHttpFlow;
 import pcap.reconst.tcp.JnetpcapReconstructor;
 import pcap.reconst.tcp.PacketReassembler;
 import pcap.reconst.tcp.TcpConnection;
 import pcap.reconst.tcp.TcpReassembler;
+import burp.BurpExtender;
 
 public class HttpReconstructor {
 
 	private static Log log = LogFactory.getLog(HttpReconstructor.class);
 
-	public static void loadPcap(File pcapFile) {
+	public static void loadPcap(File pcapFile) throws PcapException {
 		try {
 			// Reassemble the TCP streams.
 			Map<TcpConnection, TcpReassembler> map = 
@@ -44,7 +45,13 @@ public class HttpReconstructor {
 				flowcount += flows.get(key).size();
 			}
 			BurpExtender.callbacks.printOutput("Parsed " + flowcount + " total flows.");
-		} catch (Exception e) {
+		}
+		catch (PcapException pce)
+		{
+			//These can propagate up the stack - all other exceptions are squashed below
+			throw pce;
+		}
+		catch (Exception e) {
 			if (log.isErrorEnabled()) {
 				log.error("", e);
 			}

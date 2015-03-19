@@ -18,6 +18,9 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import pcap.reconst.ex.PcapException;
 
 import com.nccgroup.burp.pcap.HttpReconstructor;
 import com.nccgroup.burp.pcap.PcapFileFilter;
@@ -51,6 +54,13 @@ public class BurpExtender implements IBurpExtender
 		        try
 		        {
 		        	HttpReconstructor.loadPcap(file);
+		        }
+		        catch(PcapException pce)
+		        {
+		        	JOptionPane.showMessageDialog(null,
+		        		    pce.getLocalizedMessage(),
+		        		    "Pcap Exception",
+		        		    JOptionPane.ERROR_MESSAGE);
 		        }
 		        catch(UnsatisfiedLinkError ule)
 		        {
