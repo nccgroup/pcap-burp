@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
@@ -58,35 +59,53 @@ public class BurpExtender implements IBurpExtender
 			putValue("Name", "Open Pcap File...");
 		}
 		
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {	        
 			int returnVal = fc.showOpenDialog(null);
-
+			
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        File[] files = fc.getSelectedFiles();
-		        try
-		        {
-		        	for (File file : files)
-		        	{
-		        		BurpExtender.callbacks.saveExtensionSetting(PREV_PCAP_DIR, file.getParent());
+				//GUI wont refresh until this method returns, so kick off a new thread
+		    	new Thread(new Runnable() {
+					public void run() {
+				        File[] files = fc.getSelectedFiles();
 
-		        		HttpReconstructor.loadPcap(file);
-		        	}
-		        }
-		        catch(PcapException pce)
-		        {
-		        	JOptionPane.showMessageDialog(null,
-		        		    pce.getLocalizedMessage(),
-		        		    "Pcap Exception",
-		        		    JOptionPane.ERROR_MESSAGE);
-		        }
-		        catch(UnsatisfiedLinkError ule)
-		        {
-		            // write a message to the Burp alerts tab
-		            callbacks.issueAlert("Unable to load jNetPcap library from java.library.path");
-            		callbacks.issueAlert("java.library.path is "+ System.getProperty("java.library.path"));
-            		callbacks.issueAlert("Visit https://github.com/neonbunny/pcap-reconst/tree/master/lib for available libraries.");
-		        }
-		    }
+						final ProgressWindow progressWindow = new ProgressWindow(
+								new JFrame(), "Open Pcap File...", "Preparing...");
+
+						//New thread for the modal dialog, as setVisible is blocking
+						new Thread(new Runnable() {
+							public void run() {
+								progressWindow.setLocationRelativeTo(null);
+								progressWindow.setVisible(true);
+							}}).start();
+
+			        	for (final File file : files)
+			        	{
+			        		BurpExtender.callbacks.saveExtensionSetting(PREV_PCAP_DIR, file.getParent());
+
+			        		progressWindow.setCurrentFile(file);
+			        		
+							try {
+								HttpReconstructor.loadPcap(file);
+							}
+					        catch(PcapException pce)
+					        {
+					        	JOptionPane.showMessageDialog(null,
+					        		    pce.getLocalizedMessage(),
+					        		    "Pcap Exception",
+					        		    JOptionPane.ERROR_MESSAGE);
+					        }
+					        catch(UnsatisfiedLinkError ule)
+					        {
+					            // write a message to the Burp alerts tab
+					            callbacks.issueAlert("Unable to load jNetPcap library from java.library.path");
+			            		callbacks.issueAlert("java.library.path is "+ System.getProperty("java.library.path"));
+			            		callbacks.issueAlert("Visit https://github.com/neonbunny/pcap-reconst/tree/master/lib for available libraries.");
+					        }
+						}
+			        	
+			        	progressWindow.dispose();					
+		        	}}).start();
+			}
 		}
 	}
 
