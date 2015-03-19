@@ -65,6 +65,8 @@ public class HttpFlowParser extends pcap.reconst.http.HttpFlowParser {
 			} else {
 				request = getRequest(flow, assembler);
 			}
+			
+			BurpExtender.callbacks.printOutput("Parsed " + request.getUrl());
 			return new RecordedHttpFlow(rawdata, request, response);
 		}
 		return null;
