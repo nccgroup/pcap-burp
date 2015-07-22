@@ -14,7 +14,8 @@
         <pathelement location="lib/commons-lang3-3.1.jar"/>
         <pathelement location="lib/commons-logging-1.1.1.jar"/>
     	<pathelement location="lib/httpcore-4.2.1.jar"/>
-		<pathelement location="lib/pcap-reconst-1.3.5.jar"/>
+		<pathelement location="lib/pcap-reconst-1.3.6.jar"/>
+		<pathelement location="lib/pcapngdecoder-1.0.jar"/>
     </path>
 	
   <target name="init">
@@ -42,7 +43,8 @@
     	<zipfileset src="lib/commons-lang3-3.1.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/commons-logging-1.1.1.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/httpcore-4.2.1.jar" excludes="META-INF/*"/>
-    	<zipfileset src="lib/pcap-reconst-1.3.5.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/pcap-reconst-1.3.6.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/pcapngdecoder-1.0.jar" excludes="META-INF/*"/>
   	</jar>
   </target>
 

@@ -21,6 +21,7 @@ import pcap.reconst.ex.PcapException;
 import pcap.reconst.http.datamodel.RecordedHttpFlow;
 import pcap.reconst.tcp.JnetpcapReconstructor;
 import pcap.reconst.tcp.PacketReassembler;
+import pcap.reconst.tcp.StatusHandle;
 import pcap.reconst.tcp.TcpConnection;
 import pcap.reconst.tcp.TcpReassembler;
 import burp.BurpExtender;
@@ -29,15 +30,15 @@ public class HttpReconstructor {
 
 	private static Log log = LogFactory.getLog(HttpReconstructor.class);
 
-	public static void loadPcap(File pcapFile) throws PcapException {
+	public static void loadPcap(File pcapFile, StatusHandle statusHandle) throws PcapException {
 		try {
 			// Reassemble the TCP streams.
 			Map<TcpConnection, TcpReassembler> map = 
-					new JnetpcapReconstructor(new PacketReassembler()).reconstruct(pcapFile.getAbsolutePath());
+					new JnetpcapReconstructor(new PacketReassembler()).reconstruct(pcapFile.getAbsolutePath(), statusHandle);
 			
 			// Parse the HTTP flows from the streams.
 			HttpFlowParser httpParser = new HttpFlowParser(map);
-			Map<TcpConnection, List<RecordedHttpFlow>> flows = httpParser.parse();
+			Map<TcpConnection, List<RecordedHttpFlow>> flows = httpParser.parse(statusHandle);
 
 			// Count the total number of extracted flows.
 			int flowcount = 0;

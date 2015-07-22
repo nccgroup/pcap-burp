@@ -12,6 +12,7 @@ package burp;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,9 +23,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import pcap.reconst.ex.PcapException;
+import pcap.reconst.tcp.StatusHandle;
 
 import com.nccgroup.burp.pcap.HttpReconstructor;
 import com.nccgroup.burp.pcap.PcapFileFilter;
+import com.nccgroup.burp.pcap.PcapngToPcap;
 
 public class BurpExtender implements IBurpExtender
 {
@@ -71,21 +74,45 @@ public class BurpExtender implements IBurpExtender
 						final ProgressWindow progressWindow = new ProgressWindow(
 								new JFrame(), "Open Pcap File...", "Preparing...");
 
+						StatusHandle statusHandle = new StatusHandle();
+						
 						//New thread for the modal dialog, as setVisible is blocking
 						new Thread(new Runnable() {
 							public void run() {
 								progressWindow.setLocationRelativeTo(null);
 								progressWindow.setVisible(true);
+								statusHandle.cancel();
 							}}).start();
 
-			        	for (final File file : files)
+			        	for (File file : files)
 			        	{
+			        		boolean shouldDelete = false;
 			        		BurpExtender.callbacks.saveExtensionSetting(PREV_PCAP_DIR, file.getParent());
 
 			        		progressWindow.setCurrentFile(file);
 			        		
+			        		if (file.getAbsolutePath().endsWith(".pcapng"))
+			        		{
+			        			try
+			        			{
+				        			File tempFile = File.createTempFile("burp", ".pcap");
+				        			PcapngToPcap.convert(file, tempFile);
+				        			file = tempFile;
+				        			shouldDelete = true;
+			        			}
+			        			catch (IOException ioe)
+			        			{
+			        				JOptionPane.showMessageDialog(null,
+						        		    ioe.getLocalizedMessage(),
+						        		    "Pcapng Conversion Exception",
+						        		    JOptionPane.ERROR_MESSAGE);
+			        				break;
+			        			}
+			        		}
+			        		
+			        		
 							try {
-								HttpReconstructor.loadPcap(file);
+								HttpReconstructor.loadPcap(file, statusHandle);
 							}
 					        catch(PcapException pce)
 					        {
@@ -101,6 +128,13 @@ public class BurpExtender implements IBurpExtender
 			            		callbacks.issueAlert("java.library.path is "+ System.getProperty("java.library.path"));
 			            		callbacks.issueAlert("Visit https://github.com/neonbunny/pcap-reconst/tree/master/lib for available libraries.");
 					        }
+							finally
+							{
+								if (shouldDelete)
+								{
+									file.delete();
+								}
+							}
 						}
 			        	
 			        	progressWindow.dispose();					
@@ -117,14 +151,16 @@ public class BurpExtender implements IBurpExtender
     	callbacks.registerContextMenuFactory(new IContextMenuFactory() {
 			
 			public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
-				if (invocation.getInvocationContext() == IContextMenuInvocation.CONTEXT_TARGET_SITE_MAP_TREE ||
-						invocation.getInvocationContext() == IContextMenuInvocation.CONTEXT_SCANNER_RESULTS)
+				switch (invocation.getInvocationContext())
 				{
-					return Collections.singletonList(new JMenuItem(new OpenPcapFileMenuAction()));
-				}
-				else
-				{
-					return Collections.emptyList();
+					case IContextMenuInvocation.CONTEXT_TARGET_SITE_MAP_TREE:
+					case IContextMenuInvocation.CONTEXT_SCANNER_RESULTS:
+					case IContextMenuInvocation.CONTEXT_TARGET_SITE_MAP_TABLE:
+					case IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_REQUEST:
+					case IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_RESPONSE:
+						return Collections.singletonList(new JMenuItem(new OpenPcapFileMenuAction()));
+					default:
+						return Collections.emptyList();
 				}
 			}
 		});

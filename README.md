@@ -1,9 +1,9 @@
-This project provides a Burp Suite extension for importing and passively scanning Pcap files with Burp. It can be used in cases 
+This project provides a Burp Suite extension for importing and passively scanning Pcap/Pcapng files with Burp. It can be used in cases 
 where a HTTP client does not support proxying but it would be useful to scan, inspect or replay the HTTP traffic using Burp. 
 
 Building from Source (optional)
 -------------------------------
-The Ant build file will produce a consolidated jar in the dist/lib directory.
+The Ant "dist" target will produce a consolidated jar in the dist/lib directory.
 
 Installation
 ------------
@@ -21,8 +21,4 @@ Installation
 Usage
 -----
 After installation, an "Open Pcap file..." option will be added to the "right-click" 
-context menu on the trees under the **Scanner** and **Target** tabs in Burp.
-
-Notes
------
-The newer PcapNG format is not supported. Details on converting PcapNG to Pcap format can be found in this blog post: http://www.netresec.com/?page=Blog&month=2012-12&post=HowTo-handle-PcapNG-files
+context menu on the **Scanner Issues**, **Target Tree** and **Request/Response View** areas of Burp.

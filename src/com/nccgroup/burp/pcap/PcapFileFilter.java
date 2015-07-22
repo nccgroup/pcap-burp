@@ -17,11 +17,11 @@ import javax.swing.filechooser.FileFilter;
 public class PcapFileFilter extends FileFilter {
 	@Override
 	public String getDescription() {
-		return "*.pcap files";
+		return "Packet Capture Files (*.pcap;*.pcapng files)";
 	}
 
 	@Override
 	public boolean accept(File f) {
-		return f.isDirectory() || f.getName().endsWith(".pcap");
+		return f.isDirectory() || f.getName().endsWith(".pcap") || f.getName().endsWith(".pcapng");
 	}
 }
