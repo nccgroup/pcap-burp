@@ -74,7 +74,7 @@ public class BurpExtender implements IBurpExtender
 						final ProgressWindow progressWindow = new ProgressWindow(
 								new JFrame(), "Open Pcap File...", "Preparing...");
 
-						StatusHandle statusHandle = new StatusHandle();
+						final StatusHandle statusHandle = new StatusHandle();
 						
 						//New thread for the modal dialog, as setVisible is blocking
 						new Thread(new Runnable() {
