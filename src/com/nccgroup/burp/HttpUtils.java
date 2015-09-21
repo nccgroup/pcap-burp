@@ -14,15 +14,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pcap.reconst.compression.CompressionType;
 import pcap.reconst.compression.UncompressImpl;
 import burp.BurpExtender;
 
 public class HttpUtils {
-
-	private static final int MAX_HEADER_SIZE = 16 * 1024;
-
+	/** Maximum amount of data at the begining of a stream to parse as headers. They can be very large if they include ASP ViewStates */
+	private static final int MAX_HEADER_SIZE = 32 * 1024;
+	
+	/** RegEx for the continue block */
+	private static final Pattern CONTINUE_PATTERN = Pattern.compile("(?s)HTTP\\/1\\.1 100 Continue(.*?)\\r\\n\\r\\n");
+	
 	/**
 	 * Removes provisional "HTTP/1.1 100 Continue" server responses from the request stream. 
 	 * These responses will appear in the request stream (rather than the response stream) given 
@@ -33,23 +38,32 @@ public class HttpUtils {
 	 */
 	public static byte[] stripContinueFromRequests(byte[] input)
 	{
-		String initialPart = new String(input, 0, Math.min(MAX_HEADER_SIZE, input.length));
-		int stringIndex = initialPart.indexOf("HTTP/1.1 100 Continue\r\n\r\n");
-		final int stringLength = "HTTP/1.1 100 Continue\r\n\r\n".length();
-		
-		if (stringIndex != -1)
+		byte[] result = input;
+
+		//Loop until we fail to find any more
+		while (true)
 		{
-			byte[] modified_request = new byte[input.length - stringLength];
-			//Copy up to the string we wish to exclude
-			System.arraycopy(input, 0, modified_request, 0, stringIndex);
-			//Copy the other side of the byte array after the string we wish to exclude
-			System.arraycopy(input, stringIndex + stringLength, modified_request, stringIndex, input.length - (stringIndex + stringLength));
-			return modified_request;
+			String initialPart = new String(result, 0, Math.min(MAX_HEADER_SIZE, result.length));
+		    Matcher m = CONTINUE_PATTERN.matcher(initialPart);
+			
+		    if (m.find())
+		    {
+				int stringIndex = m.start();
+				final int stringLength = m.end() - m.start();
+	
+				result = new byte[input.length - stringLength];
+				//Copy up to the string we wish to exclude
+				System.arraycopy(input, 0, result, 0, stringIndex);
+				//Copy the other side of the byte array after the string we wish to exclude
+				System.arraycopy(input, stringIndex + stringLength, result, stringIndex, input.length - (stringIndex + stringLength));
+		    }
+			else
+			{
+				//No more to find - time to return
+				break;
+			}
 		}
-		else
-		{
-			return input;
-		}
+		return result;
 	}
 	
 	/**
