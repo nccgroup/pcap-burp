@@ -2,8 +2,8 @@ Uuid: 01da4fdd9f6e4e12b0622fbdaa2dd26d
 ExtensionType: 1
 Name: Pcap Importer
 RepoName: pcap-importer
-ScreenVersion: 1.3
-SerialVersion: 4
+ScreenVersion: 1.4
+SerialVersion: 5
 MinPlatformVersion: 0
 ProOnly: True
 Author: Stephen Tomkinson - NCC Group

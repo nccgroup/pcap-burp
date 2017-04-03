@@ -1,28 +1,5 @@
-<p>This extension enables Pcap files to be imported into the Burp Target site 
+<p>This extension enables Pcap and Pcap-NG files to be imported into the Burp Target site
 map, and passively scanned. It can be used in cases
 where an HTTP client does not support proxying but it would be useful to scan, inspect or replay the HTTP traffic using Burp.</p>
-
-<p>The extension makes use of jNetPcap, which relies on a native binary to be loaded by Java.
-Download the correct binary for your platform and copy to your java.library.path (e.g. your %PATH% on Windows):</p>
-<ul>
-	<li><strong>Windows:</strong>
-	<a href="https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/jnetpcap.dll">
-	x32</a>
-	<a href="https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/jnetpcap.dll">
-	x64</a></li>
-	<li><strong>Linux:</strong>
-	<a href="https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/libjnetpcap.so">
-	x32</a>
-	<a href="https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/libjnetpcap.so">
-	x64</a></li>
-</ul>
-
-<p>The jNetPcap native binary requires a packet capture tool to be installed. If 
-you do not already have this installed, you can download it from the following 
-locations:</p>
-<ul>
-	<li><strong>Windows:</strong> <a href="http://www.winpcap.org/">WinPcap</a></li>
-	<li><strong>Linux:</strong> <a href="http://www.tcpdump.org/">libpcap</a></li>
-</ul>
 
 <p>After installation, an "Open Pcap file..." option will be added to the context menu on the tree under the Target tab.</p>
