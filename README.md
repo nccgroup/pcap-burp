@@ -7,16 +7,7 @@ The Ant "dist" target will produce a consolidated jar in the dist/lib directory.
 
 Installation
 ------------
-* This project makes use of jNetPcap, which requires you have installed either [WinPcap](http://www.winpcap.org/) (on Windows) or [libpcap](http://www.tcpdump.org/) (on Linux)
-* jNetPcap 1.4.r1425 includes a native binary component which must be loaded by Java. 
-   For convenience you can download the correct binary for your platform from https://github.com/neonbunny/pcap-reconst/tree/master/lib 
-   and place it in your java.library.path (i.e. your %PATH% on Windows) :
-
-   |     | Windows | Linux |
-   |-----|---------|-------|
-   | x32 | [jnetpcap.dll](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/jnetpcap.dll) | [libjpcap.so](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x32/libjnetpcap.so) |
-   | x64 | [jnetpcap.dll](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/jnetpcap.dll) | [libjpcap.so](https://github.com/neonbunny/pcap-reconst/raw/master/lib/x64/libjnetpcap.so) |
-* Use Burp's "Extender" tab to add the latest jar file from the [dist/lib](https://github.com/nccgroup/pcap-burp/tree/master/dist/lib) directory.
+Use Burp's "Extender" tab to add the latest jar file from the [dist/lib](https://github.com/nccgroup/pcap-burp/tree/master/dist/lib) directory.
 
 Usage
 -----

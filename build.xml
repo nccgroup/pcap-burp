@@ -10,12 +10,13 @@
 
 	<path id="deps.classpath">
         <pathelement location="${build}"/>
-		<pathelement location="lib/jnetpcap.jar"/>
         <pathelement location="lib/commons-lang3-3.1.jar"/>
         <pathelement location="lib/commons-logging-1.1.1.jar"/>
     	<pathelement location="lib/httpcore-4.2.1.jar"/>
-		<pathelement location="lib/pcap-reconst-1.3.6.jar"/>
+		<pathelement location="lib/pcap-reconst-1.3.7.jar"/>
 		<pathelement location="lib/pcapngdecoder-1.0.jar"/>
+        <pathelement location="lib/pkts-core-2.0.8-SNAPSHOT.jar"/>
+        <pathelement location="lib/pkts-buffers-2.0.7.jar"/>
     </path>
 	
   <target name="init">
@@ -39,12 +40,13 @@
 
     <!-- Put everything in ${build} into the jar file -->
     <jar jarfile="${dist}/lib/burp-pcap-${DSTAMP}.jar" basedir="${build}" excludes="burp/I*.class">
-    	<zipfileset src="lib/jnetpcap.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/commons-lang3-3.1.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/commons-logging-1.1.1.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/httpcore-4.2.1.jar" excludes="META-INF/*"/>
-    	<zipfileset src="lib/pcap-reconst-1.3.6.jar" excludes="META-INF/*"/>
+    	<zipfileset src="lib/pcap-reconst-1.3.7.jar" excludes="META-INF/*"/>
     	<zipfileset src="lib/pcapngdecoder-1.0.jar" excludes="META-INF/*"/>
+        <zipfileset src="lib/pkts-core-2.0.8-SNAPSHOT.jar" excludes="META-INF/*"/>
+        <zipfileset src="lib/pkts-buffers-2.0.7.jar" excludes="META-INF/*"/>
   	</jar>
   </target>
 
