@@ -30,7 +30,7 @@
         description="compile the source " >
     <!-- Compile the java code from ${src} and ${src-burp} into ${build} -->
   	<javac srcdir="${src-burp}" destdir="${build}" source="1.6" target="1.6"/>
-  	<javac srcdir="${src}" destdir="${build}" classpathref="deps.classpath" source="1.6" target="1.6"/>
+  	<javac srcdir="${src}" destdir="${build}" classpathref="deps.classpath" source="7" target="1.7"/>
   </target>
 
   <target name="dist" depends="compile"

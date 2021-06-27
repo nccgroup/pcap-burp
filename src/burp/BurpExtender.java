@@ -13,6 +13,10 @@ package burp;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.List;
 
@@ -90,27 +94,56 @@ public class BurpExtender implements IBurpExtender
 			        		BurpExtender.callbacks.saveExtensionSetting(PREV_PCAP_DIR, file.getParent());
 
 			        		progressWindow.setCurrentFile(file);
-			        		
-			        		if (file.getAbsolutePath().endsWith(".pcapng"))
-			        		{
-			        			try
-			        			{
-				        			File tempFile = File.createTempFile("burp", ".pcap");
-				        			PcapngToPcap.convert(file, tempFile);
-				        			file = tempFile;
-				        			shouldDelete = true;
-			        			}
-			        			catch (IOException ioe)
-			        			{
-			        				JOptionPane.showMessageDialog(null,
-						        		    ioe.getLocalizedMessage(),
-						        		    "Pcapng Conversion Exception",
-						        		    JOptionPane.ERROR_MESSAGE);
-			        				break;
-			        			}
-			        		}
-			        		
-			        		
+
+							try (SeekableByteChannel channel = Files.newByteChannel(file.toPath(), StandardOpenOption.READ))
+							{
+								ByteBuffer fileMagic = ByteBuffer.allocate(4);
+								channel.read(fileMagic);
+
+								fileMagic.position(0);
+								int magicValue = fileMagic.getInt();
+
+								// BIG_ENDIAN PCAP or LITTLE_ENDIAN PCAP
+								if (magicValue == -725372255 || magicValue == -1582119980)
+								{
+									// All is good, already PCAP
+								}
+								// SECTION HEADER for PCAPNG (palindromic, so byte order not important)
+								else if  (magicValue == 168627466)
+								{
+									// Convert the PCAPNG -> PCAP
+									try
+									{
+										File tempFile = File.createTempFile("burp", ".pcap");
+										PcapngToPcap.convert(file, tempFile);
+										file = tempFile;
+										shouldDelete = true;
+									}
+									catch (IOException ioe)
+									{
+										JOptionPane.showMessageDialog(null,
+												ioe.getLocalizedMessage(),
+												"Pcapng Conversion Exception",
+												JOptionPane.ERROR_MESSAGE);
+										break;
+									}
+								}
+								else
+								{
+									JOptionPane.showMessageDialog(null,
+											"Not a Pcap/Pcapng file",
+											"Unable to open file",
+											JOptionPane.ERROR_MESSAGE);
+								}
+							}
+							catch (IOException ioe)
+							{
+								JOptionPane.showMessageDialog(null,
+										ioe.getLocalizedMessage(),
+										"Unable to open file",
+										JOptionPane.ERROR_MESSAGE);
+							}
+
 							try {
 								HttpReconstructor.loadPcap(file, statusHandle);
 							}
