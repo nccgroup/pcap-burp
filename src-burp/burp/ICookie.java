@@ -5,7 +5,7 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
@@ -28,6 +28,14 @@ public interface ICookie
      * attribute for the cookie.
      */
     String getDomain();
+
+    /**
+     * This method is used to retrieve the path for which the cookie is in
+     * scope.
+     *
+     * @return The path for which the cookie is in scope or null if none is set.
+     */
+    String getPath();
 
     /**
      * This method is used to retrieve the expiration time for the cookie.

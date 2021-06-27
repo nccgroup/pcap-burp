@@ -5,7 +5,7 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
@@ -46,7 +46,8 @@ public interface IMessageEditorTab
      * message, so that the custom tab can indicate whether it should be enabled
      * for that message.
      *
-     * @param content The message that is about to be displayed.
+     * @param content The message that is about to be displayed, or a zero-length
+     * array if the existing message is to be cleared.
      * @param isRequest Indicates whether the message is a request or a
      * response.
      * @return The method should return

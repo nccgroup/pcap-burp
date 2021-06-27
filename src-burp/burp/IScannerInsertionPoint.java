@@ -5,7 +5,7 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
@@ -66,10 +66,15 @@ public interface IScannerInsertionPoint
      */
     static final byte INS_HEADER = 0x20;
     /**
-     * Used to indicate where the payload is inserted into a REST parameter
-     * within the URL file path.
+     * Used to indicate where the payload is inserted into a URL path folder.
      */
-    static final byte INS_URL_REST = 0x21;
+    static final byte INS_URL_PATH_FOLDER = 0x21;
+    /**
+     * Used to indicate where the payload is inserted into a URL path folder.
+     * This is now deprecated; use <code>INS_URL_PATH_FOLDER</code> instead.
+     */
+    @Deprecated
+    static final byte INS_URL_PATH_REST = INS_URL_PATH_FOLDER;
     /**
      * Used to indicate where the payload is inserted into the name of an added
      * URL parameter.
@@ -80,6 +85,16 @@ public interface IScannerInsertionPoint
      * body parameter.
      */
     static final byte INS_PARAM_NAME_BODY = 0x23;
+    /**
+     * Used to indicate where the payload is inserted into the body of the HTTP
+     * request.
+     */
+    static final byte INS_ENTIRE_BODY = 0x24;
+    /**
+     * Used to indicate where the payload is inserted into the URL path
+     * filename.
+     */
+    static final byte INS_URL_PATH_FILENAME = 0x25;
     /**
      * Used to indicate where the payload is inserted at a location manually
      * configured by the user.

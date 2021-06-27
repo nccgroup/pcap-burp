@@ -5,12 +5,13 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
-import java.util.List;
+
 import javax.swing.JMenuItem;
+import java.util.List;
 
 /**
  * Extensions can implement this interface and then call
@@ -26,7 +27,7 @@ public interface IContextMenuFactory
      * details of the menu invocation.
      *
      * @param invocation An object that implements the
-     * <code>IMessageEditorTabFactory</code> interface, which the extension can
+     * <code>IContextMenuInvocation</code> interface, which the extension can
      * query to obtain details of the context menu invocation.
      * @return A list of custom menu items (which may include sub-menus,
      * checkbox menu items, etc.) that should be displayed. Extensions may

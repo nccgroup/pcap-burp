@@ -5,7 +5,7 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
@@ -26,8 +26,8 @@ public interface ITempFile
     byte[] getBuffer();
 
     /**
-     * This method is used to permanently delete the temporary file when it is
-     * no longer required.
+     * This method is deprecated and no longer performs any action.
      */
+    @Deprecated
     void delete();
 }

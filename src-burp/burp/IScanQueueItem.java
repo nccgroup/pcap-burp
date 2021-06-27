@@ -5,7 +5,7 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
@@ -31,6 +31,7 @@ public interface IScanQueueItem
      * @return An indication of the percentage completed for the scan queue
      * item.
      */
+    @Deprecated
     byte getPercentageComplete();
 
     /**

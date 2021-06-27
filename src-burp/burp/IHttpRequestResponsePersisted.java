@@ -5,7 +5,7 @@ package burp;
  *
  * Copyright PortSwigger Ltd. All rights reserved.
  *
- * This code may be used to extend the functionality of Burp Suite Free Edition
+ * This code may be used to extend the functionality of Burp Suite Community Edition
  * and Burp Suite Professional, provided that this usage does not violate the
  * license terms for those products.
  */
@@ -18,9 +18,8 @@ package burp;
 public interface IHttpRequestResponsePersisted extends IHttpRequestResponse
 {
     /**
-     * This method is used to permanently delete the saved temporary files. It
-     * will no longer be possible to retrieve the request or response for this
-     * item.
+     * This method is deprecated and no longer performs any action.
      */
+    @Deprecated
     void deleteTempFiles();
 }
